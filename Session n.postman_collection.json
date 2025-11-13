@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "a265999f-e573-41d5-9f71-32cc02a940c6",
+		"name": "Session n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49617359",
+		"_collection_link": "https://www.postman.com/raimatalukdar513-8771768/workspace/raima-talukdar-s-workspace/collection/49617359-a265999f-e573-41d5-9f71-32cc02a940c6?action=share&source=collection_link&creator=49617359"
+	},
+	"item": [
+		{
+			"name": "req1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains the expected query parameters\", function () {\r",
+							"    // 1. Parse the JSON response body\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    // 2. Check that the 'args' object exists (where Postman Echo puts query params)\r",
+							"    pm.expect(responseData.args).to.be.an('object');\r",
+							"\r",
+							"    // 3. Verify the value of foo1\r",
+							"    pm.expect(responseData.args.foo1).to.equal(\"bar1\");\r",
+							"\r",
+							"    // 4. Verify the value of foo2\r",
+							"    pm.expect(responseData.args.foo2).to.equal(\"bar2\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/get?foo1=bar1&foo2=bar2",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					],
+					"query": [
+						{
+							"key": "foo1",
+							"value": "bar1"
+						},
+						{
+							"key": "foo2",
+							"value": "bar2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"message\": \"This is my test data for Newman.\", \"id\": 123 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-echo.com/post",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Verify the HTTP status code is 200 (OK)\r",
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2 (Revised Focus): Verify the server successfully echoed back the entire sent payload\r",
+							"pm.test(\"Server echoed back the complete sent data payload (ID and Message)\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    // Assumes the server echoes the sent body inside 'json' property (common for echo services)\r",
+							"    // If your server uses a different property (like 'data' or 'body'), change 'responseData.json' accordingly.\r",
+							"    const echoedPayload = responseData.json;\r",
+							"\r",
+							"    // Check 1: ID\r",
+							"    pm.expect(echoedPayload.id, \"ID not found or not a number\").to.be.a('number');\r",
+							"    pm.expect(echoedPayload.id, \"ID does not match the expected value 1234\").to.equal(1234); \r",
+							"    \r",
+							"    // Check 2: Message\r",
+							"    pm.expect(echoedPayload.message, \"Message does not match the expected string\").to.equal(\"This is my test data for Newman.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n  \"message\": \"This is my test data for Newman.\", \r\n  \"id\": 1234 \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-echo.com/put",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"put"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains updated status\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    // Check if the server received the partial update data you sent\r",
+							"    pm.expect(responseData.json.status).to.equal(\"pending\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"status\": \"pending\", \"notes\": \"Need to follow up.\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-echo.com/patch",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"patch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/delete",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
